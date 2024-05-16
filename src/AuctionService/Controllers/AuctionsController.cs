@@ -100,7 +100,7 @@ public class AuctionsController : ControllerBase
         var auction = await _context.Auctions.FindAsync(id);
         if(auction == null) return NotFound();
         
-        if(acution.Seller != User.Identity.Name) return Forbid();
+        if(auction.Seller != User.Identity.Name) return Forbid();
         _context.Auctions.Remove(auction);
         await _publishEndpoint.Publish<AuctionDeleted>(new { Id= auction.Id.ToString() });
         var result = await _context.SaveChangesAsync() > 0;
